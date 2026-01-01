@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Compress Image Online – Pixora</title>
+  <meta name="description" content="Compress images online for free. Your image never leaves your device. Fast, secure, and private image compression.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+      color: #111;
+    }
+
+    header {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .logo {
+      width: 36px;
+      height: 36px;
+      background: #4f46e5;
+      border-radius: 8px;
+    }
+
+    main {
+      max-width: 600px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    input[type="file"] {
+      width: 100%;
+      margin: 15px 0;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background: #4f46e5;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #4338ca;
+    }
+
+    .note {
+      font-size: 13px;
+      color: #555;
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    a {
+      color: #4f46e5;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo"></div>
+  <div>
+    <div style="font-weight:600;">Pixora</div>
+    <div style="font-size:12px;color:#555;">Your image never leaves your device</div>
+  </div>
+</header>
+
+<main>
+  <h1>Compress Image Online</h1>
+  <p>Reduce image size without losing quality. Fast, private, and free.</p>
+
+  <input type="file" id="imageInput" accept="image/*">
+
+  <label>Compression Quality: <span id="qualityValue">0.8</span></label>
+  <input type="range" id="quality" min="0.1" max="1" step="0.1" value="0.8">
+
+  <button onclick="compressImage()">Compress & Download</button>
+
+  <div class="note">
+    100% client-side • No upload • Secure & private  
+    <br><a href="index.html">← Back to Pixora</a>
+  </div>
+</main>
+
+<script>
+  const qualitySlider = document.getElementById('quality');
+  const qualityValue = document.getElementById('qualityValue');
+
+  qualitySlider.addEventListener('input', () => {
+    qualityValue.textContent = qualitySlider.value;
+  });
+
+  function compressImage() {
+    const fileInput = document.getElementById('imageInput');
+    if (!fileInput.files.length) {
+      alert('Please select an image');
+      return;
+    }
+
+    const file = fileInput.files[0];
+    const img = new Image();
+    const reader = new FileReader();
+
+    reader.onload = e => {
+      img.src = e.target.result;
+    };
+
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+
+      canvas.toBlob(blob => {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'compressed-' + file.name;
+        link.click();
+      }, 'image/jpeg', qualitySlider.value);
+    };
+
+    reader.readAsDataURL(file);
+  }
+</script>
+
+</body>
+</html>
