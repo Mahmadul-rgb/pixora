@@ -107,6 +107,7 @@
   <input type="range" id="quality" min="0.1" max="1" step="0.1" value="0.8">
 
   <button onclick="compressImage()">Compress & Download</button>
+  <div id="result" style="margin-top:15px;font-size:14px;color:#333;"></div>
 
   <div class="note">
     100% client-side • No upload • Secure & private  
@@ -117,44 +118,63 @@
 <script>
   const qualitySlider = document.getElementById('quality');
   const qualityValue = document.getElementById('qualityValue');
+  const resultDiv = document.getElementById('result');
+  
 
   qualitySlider.addEventListener('input', () => {
     qualityValue.textContent = qualitySlider.value;
   });
 
-  function compressImage() {
-    const fileInput = document.getElementById('imageInput');
-    if (!fileInput.files.length) {
-      alert('Please select an image');
-      return;
-    }
+ function formatSize(bytes) {
+  if (bytes < 1024) return bytes + " B";
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + " KB";
+  return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+}
 
-    const file = fileInput.files[0];
-    const img = new Image();
-    const reader = new FileReader();
-
-    reader.onload = e => {
-      img.src = e.target.result;
-    };
-
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = img.width;
-      canvas.height = img.height;
-
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0);
-
-      canvas.toBlob(blob => {
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'compressed-' + file.name;
-        link.click();
-      }, 'image/jpeg', qualitySlider.value);
-    };
-
-    reader.readAsDataURL(file);
+function compressImage() {
+  const fileInput = document.getElementById('imageInput');
+  if (!fileInput.files.length) {
+    alert('Please select an image');
+    return;
   }
+
+  const file = fileInput.files[0];
+  const originalSize = file.size;
+
+  const img = new Image();
+  const reader = new FileReader();
+
+  reader.onload = e => {
+    img.src = e.target.result;
+  };
+
+  img.onload = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+
+    canvas.toBlob(blob => {
+      const compressedSize = blob.size;
+      const reduction = (((originalSize - compressedSize) / originalSize) * 100).toFixed(1);
+
+      resultDiv.innerHTML = `
+        <strong>Original:</strong> ${formatSize(originalSize)}<br>
+        <strong>Compressed:</strong> ${formatSize(compressedSize)}<br>
+        <strong>Reduced:</strong> ${reduction}%
+      `;
+
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'compressed-' + file.name;
+      link.click();
+    }, 'image/jpeg', qualitySlider.value);
+  };
+
+  reader.readAsDataURL(file);
+}
 </script>
 
 </body>
