@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Image to WebP Online – Pixora</title>
+  <meta name="description" content="Convert images to WebP instantly, with complete privacy.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+      color: #111;
+    }
+
+    header {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .logo {
+      width: 36px;
+      height: 36px;
+      background: #4f46e5;
+      border-radius: 8px;
+    }
+
+    header .title {
+      font-weight: 600;
+    }
+
+    header .subtitle {
+      font-size: 12px;
+      color: #555;
+    }
+
+    main {
+      max-width: 600px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    input[type="file"] {
+      width: 100%;
+      margin: 10px 0;
+      padding: 8px;
+    }
+
+    button {
+      margin-top: 15px;
+      width: 100%;
+      padding: 12px;
+      background: #4f46e5;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #4338ca;
+    }
+
+    #previewBox {
+      margin-top: 15px;
+      width: 100%;
+      max-width: 260px;
+      height: 260px;
+      border: 1px dashed #ccc;
+      border-radius: 10px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #f9fafb;
+    }
+
+    #previewImage {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .note {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #555;
+      text-align: center;
+    }
+
+    .note a {
+      color: #4f46e5;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo"></div>
+  <div>
+    <div class="title">Pixora</div>
+    <div class="subtitle">Your image never leaves your device</div>
+  </div>
+</header>
+
+<main>
+  <h1>Image to WebP Online</h1>
+  <p>Convert images to WebP instantly, with complete privacy.</p>
+
+  <input type="file" id="imageInput" accept="image/*">
+
+  <div id="previewBox">
+    <img id="previewImage">
+  </div>
+
+  <button onclick="convertToWebP()">Convert & Download</button>
+
+  <div id="result" style="margin-top:15px;font-size:14px;color:#333;"></div>
+
+  <div class="note">
+    100% client-side · No upload · Secure & private  
+    <br><a href="index.html">← Back to Pixora</a>
+  </div>
+</main>
+
+<script>
+  const imageInput = document.getElementById('imageInput');
+  const previewBox = document.getElementById('previewBox');
+  const previewImage = document.getElementById('previewImage');
+  const resultDiv = document.getElementById('result');
+
+  let originalImage = new Image();
+  let originalSize = 0;
+
+  imageInput.addEventListener('change', () => {
+    const file = imageInput.files[0];
+    if (!file) return;
+
+    originalSize = file.size;
+
+    const reader = new FileReader();
+    reader.onload = e => {
+      originalImage.src = e.target.result;
+      previewImage.src = e.target.result;
+      previewBox.style.display = 'flex';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  function formatSize(bytes) {
+    if (bytes < 1024) return bytes + " B";
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + " KB";
+    return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+  }
+
+  function convertToWebP() {
+    if (!originalImage.src) {
+      alert("Please select an image first");
+      return;
+    }
+
+    const canvas = document.createElement('canvas');
+    canvas.width = originalImage.width;
+    canvas.height = originalImage.height;
+
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(originalImage, 0, 0);
+
+    canvas.toBlob(blob => {
+      resultDiv.innerHTML = `
+        <strong>Original:</strong> ${formatSize(originalSize)}<br>
+        <strong>WebP:</strong> ${formatSize(blob.size)}
+      `;
+
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'converted.webp';
+      link.click();
+    }, 'image/webp', 0.8);
+  }
+</script>
+
+</body>
+</html>
