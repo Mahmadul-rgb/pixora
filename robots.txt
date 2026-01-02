@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mahmadul-rgb.github.io/pixora/sitemap.xml
