@@ -2,43 +2,166 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Pixora – Simple Tools for Creators</title>
+  <title>Pixora – Free Online Image Tools</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <style>
-    a {
-      color: #4f46e5;
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f6f8;
+      color: #111;
+    }
+
+    header {
+      background: #fff;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .logo {
+      width: 36px;
+      height: 36px;
+      background: #4f46e5;
+      border-radius: 8px;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: #555;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .hero h1 {
+      font-size: 26px;
+      margin-bottom: 8px;
+    }
+
+    .hero p {
+      color: #555;
+      font-size: 15px;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .tool-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 18px;
       text-decoration: none;
-      font-weight: 500;
+      color: inherit;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    a:hover {
-      text-decoration: underline;
+    .tool-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     }
-   </style>
+
+    .tool-icon {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .tool-card h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .tool-card p {
+      margin-top: 6px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 13px;
+      color: #666;
+      padding: 20px;
+    }
+  </style>
 </head>
-<body style="margin:0;font-family:Arial, sans-serif;">
 
-<header style="padding:20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #eee;">
-  <div style="width:36px;height:36px;background:#4f46e5;border-radius:8px;"></div>
+<body>
+
+<header>
+  <div class="logo"></div>
   <div>
-    <div style="font-size:20px;font-weight:600;">Pixora</div>
-    <div style="font-size:12px;color:#555;">Your image never leaves your device</div>
+    <div class="brand-title">Pixora</div>
+    <div class="brand-sub">Your image never leaves your device</div>
   </div>
 </header>
 
-<main style="padding:20px;">
-  <h1>Pixora</h1>
-  <p>Simple tools for creators.</p>
+<main class="container">
 
-  <h2>Available Tools</h2>
-  <ul style="line-height:1.8;">
-  <li><a href="compress-image.html">Compress Image</a></li>
-  <li><a href="resize-image.html">Resize Image</a></li>
-  <li><a href="jpg-to-png.html">JPG to PNG</a></li>
-  <li><a href="png-to-jpg.html">PNG to JPG</a></li>
-  <li><a href="image-to-webp.html">Image to WebP</a></li>
-  </ul>
+  <section class="hero">
+    <h1>Every image tool you need</h1>
+    <p>Fast, private, and 100% client-side image tools.</p>
+  </section>
+
+  <section class="tools-grid">
+
+    <a class="tool-card" href="compress-image.html">
+      <div class="tool-icon">🗜️</div>
+      <h3>Compress Image</h3>
+      <p>Reduce image size without losing quality.</p>
+    </a>
+
+    <a class="tool-card" href="resize-image.html">
+      <div class="tool-icon">📐</div>
+      <h3>Resize Image</h3>
+      <p>Change image width and height instantly.</p>
+    </a>
+
+    <a class="tool-card" href="jpg-to-png.html">
+      <div class="tool-icon">🖼️</div>
+      <h3>JPG to PNG</h3>
+      <p>Convert JPG images to PNG format.</p>
+    </a>
+
+    <a class="tool-card" href="png-to-jpg.html">
+      <div class="tool-icon">🔄</div>
+      <h3>PNG to JPG</h3>
+      <p>Convert PNG images to JPG format.</p>
+    </a>
+
+    <a class="tool-card" href="image-to-webp.html">
+      <div class="tool-icon">⚡</div>
+      <h3>Image to WebP</h3>
+      <p>Convert images to modern WebP format.</p>
+    </a>
+
+  </section>
+
 </main>
+
+<footer>
+  © 2026 Pixora · 100% Client-Side · No Uploads
+</footer>
 
 </body>
 </html>
