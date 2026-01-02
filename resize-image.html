@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Resize Image Online – Pixora</title>
+  <meta name="description" content="Resize images online for free. Change image width and height instantly. Your image never leaves your device.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+      color: #111;
+    }
+
+    header {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .logo {
+      width: 36px;
+      height: 36px;
+      background: #4f46e5;
+      border-radius: 8px;
+    }
+
+    main {
+      max-width: 600px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    }
+
+    input[type="file"], input[type="number"] {
+      width: 100%;
+      margin: 10px 0;
+      padding: 8px;
+    }
+
+    button {
+      margin-top: 15px;
+      width: 100%;
+      padding: 12px;
+      background: #4f46e5;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #4338ca;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo"></div>
+  <div>
+    <div style="font-weight:600;">Pixora</div>
+    <div style="font-size:12px;color:#555;">Your image never leaves your device</div>
+  </div>
+</header>
+
+<main>
+  <h1>Resize Image Online</h1>
+  <p>Change image dimensions instantly without uploading.</p>
+
+  <input type="file" id="imageInput" accept="image/*">
+
+  <!-- Preview -->
+  <div id="previewBox" style="
+    margin-top:15px;
+    width:100%;
+    max-width:260px;
+    height:260px;
+    border:1px dashed #ccc;
+    border-radius:10px;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    background:#f9fafb;
+  ">
+    <img id="previewImage" style="max-width:100%;max-height:100%;object-fit:contain;">
+  </div>
+
+  <label>Width (px)</label>
+  <input type="number" id="widthInput">
+
+  <label>Height (px)</label>
+  <input type="number" id="heightInput">
+
+  <button onclick="resizeImage()">Resize & Download</button>
+
+  <div id="result" style="margin-top:15px;font-size:14px;color:#333;"></div>
+
+  <div style="margin-top:15px;font-size:13px;color:#555;text-align:center;">
+    100% client-side • No upload  
+    <br><a href="index.html">← Back to Pixora</a>
+  </div>
+</main>
+
+<script>
+  const imageInput = document.getElementById('imageInput');
+  const previewBox = document.getElementById('previewBox');
+  const previewImage = document.getElementById('previewImage');
+  const widthInput = document.getElementById('widthInput');
+  const heightInput = document.getElementById('heightInput');
+  const resultDiv = document.getElementById('result');
+
+  let originalImage = new Image();
+
+  imageInput.addEventListener('change', () => {
+    const file = imageInput.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = e => {
+      originalImage.src = e.target.result;
+      previewImage.src = e.target.result;
+      previewBox.style.display = 'flex';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  originalImage.onload = () => {
+    widthInput.value = originalImage.width;
+    heightInput.value = originalImage.height;
+  };
+
+  function resizeImage() {
+    const canvas = document.createElement('canvas');
+    canvas.width = widthInput.value;
+    canvas.height = heightInput.value;
+
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(originalImage, 0, 0, canvas.width, canvas.height);
+
+    canvas.toBlob(blob => {
+      resultDiv.innerHTML = `
+        <strong>New size:</strong> ${canvas.width} × ${canvas.height}px<br>
+        <strong>File size:</strong> ${(blob.size / 1024).toFixed(1)} KB
+      `;
+
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'resized-image.jpg';
+      link.click();
+    }, 'image/jpeg', 0.9);
+  }
+</script>
+
+</body>
+</html>
