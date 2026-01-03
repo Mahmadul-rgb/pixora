@@ -69,6 +69,14 @@
       color: #555;
       text-align: center;
     }
+    button.loading {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+button.loading::after {
+  content: " ⏳";
+}
   </style>
 </head>
 
@@ -88,7 +96,7 @@
 
   <input type="file" id="imageInput" accept="image/*" multiple>
 
-  <button onclick="convertToPDF()">Convert to PDF</button>
+  <button id="convertBtn" onclick="convertToPDF()">Convert to PDF</button>
 
   <div class="note">
     100% client-side • No upload • Secure & private  
@@ -101,6 +109,10 @@
 
 <script>
   async function convertToPDF() {
+    const btn = document.getElementById("convertBtn");
+btn.classList.add("loading");
+btn.disabled = true;
+btn.innerText = "Converting";
     const files = document.getElementById('imageInput').files;
     if (!files.length) {
       alert("Please select at least one image");
@@ -129,6 +141,9 @@
     }
 
     pdf.save("images.pdf");
+    btn.classList.remove("loading");
+btn.disabled = false;
+btn.innerText = "Convert to PDF";
   }
 
   function readFile(file) {
