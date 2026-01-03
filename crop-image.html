@@ -7,7 +7,6 @@
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://mahmadul-rgb.github.io/pixora/crop-image.html">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 
   <style>
@@ -67,12 +66,12 @@
     .preview {
       margin-top: 15px;
       text-align: center;
-      display: none;
     }
 
     canvas {
       max-width: 100%;
       border-radius: 8px;
+      background: #f3f4f6;
       margin-top: 10px;
     }
 
@@ -103,13 +102,13 @@
 
   <select id="ratio">
     <option value="1">Square (1:1)</option>
-    <option value="0.8">Portrait (4:5)</option>
-    <option value="1.7777778">Landscape (16:9)</option>
+    <option value="4/5">Portrait (4:5)</option>
+    <option value="16/9">Landscape (16:9)</option>
   </select>
 
-  <button onclick="cropImage()">Crop & Download</button>
+  <button onclick="downloadImage()">Crop & Download</button>
 
-  <div class="preview" id="previewBox">
+  <div class="preview">
     <canvas id="canvas"></canvas>
   </div>
 
@@ -121,15 +120,12 @@
 
 <script>
   const imageInput = document.getElementById("imageInput");
+  const ratioSelect = document.getElementById("ratio");
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
-  const previewBox = document.getElementById("previewBox");
-  const ratioSelect = document.getElementById("ratio");
 
   let img = new Image();
-  let imageLoaded = false;
 
-  // ✅ Instant preview on file select
   imageInput.addEventListener("change", () => {
     const file = imageInput.files[0];
     if (!file) return;
@@ -137,22 +133,17 @@
     const reader = new FileReader();
     reader.onload = e => {
       img.src = e.target.result;
+      img.onload = drawPreview;
     };
     reader.readAsDataURL(file);
   });
 
-  img.onload = () => {
-    imageLoaded = true;
-    drawPreview();
-    previewBox.style.display = "block";
-  };
-
-  ratioSelect.addEventListener("change", () => {
-    if (imageLoaded) drawPreview();
-  });
+  ratioSelect.addEventListener("change", drawPreview);
 
   function drawPreview() {
-    const ratio = parseFloat(ratioSelect.value);
+    if (!img.src) return;
+
+    const ratio = eval(ratioSelect.value);
 
     let cropWidth = img.width;
     let cropHeight = img.width / ratio;
@@ -168,6 +159,7 @@
     canvas.width = cropWidth;
     canvas.height = cropHeight;
 
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(
       img,
       startX,
@@ -181,8 +173,8 @@
     );
   }
 
-  function cropImage() {
-    if (!imageLoaded) {
+  function downloadImage() {
+    if (!canvas.width) {
       alert("Please select an image first");
       return;
     }
