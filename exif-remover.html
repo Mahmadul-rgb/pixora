@@ -1,1 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Remove Image Metadata (EXIF) Online – Free & Private | Pixora</title>
 
+  <meta name="description" content="Remove image metadata (EXIF) online for free. Delete location data and hidden info instantly. 100% client-side, no upload.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://mahmadul-rgb.github.io/pixora/exif-remover.html">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+      color: #111;
+    }
+
+    header {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      object-fit: contain;
+    }
+
+    main {
+      max-width: 600px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    }
+
+    input[type="file"] {
+      width: 100%;
+      margin: 15px 0;
+      padding: 8px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #4f46e5;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #4338ca;
+    }
+
+    .note {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #555;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <img src="logo.png" alt="Pixora logo" class="logo">
+  <div>
+    <div style="font-weight:600;">Pixora</div>
+    <div style="font-size:12px;color:#555;">Your image never leaves your device</div>
+  </div>
+</header>
+
+<main>
+  <h1>Remove Image Metadata (EXIF)</h1>
+  <p>Remove hidden metadata like location and device info from images. Fast, private, and 100% client-side.</p>
+
+  <input type="file" id="imageInput" accept="image/*">
+
+  <button onclick="removeMetadata()">Remove Metadata & Download</button>
+
+  <div class="note">
+    ✔ All metadata removed automatically<br>
+    ✔ Location data deleted<br>
+    ✔ Image never leaves your device  
+    <br><br><a href="index.html">← Back to Pixora</a>
+  </div>
+</main>
+
+<script>
+  const imageInput = document.getElementById("imageInput");
+  let img = new Image();
+
+  imageInput.addEventListener("change", () => {
+    const file = imageInput.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = e => {
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  function removeMetadata() {
+    if (!img.src) {
+      alert("Please select an image first");
+      return;
+    }
+
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    ctx.drawImage(img, 0, 0);
+
+    const link = document.createElement("a");
+    link.href = canvas.toDataURL("image/jpeg", 0.95);
+    link.download = "image-without-metadata.jpg";
+    link.click();
+  }
+</script>
+
+</body>
+</html>
