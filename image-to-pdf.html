@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Image to PDF Converter – Free & Private | Pixora</title>
+  <meta name="description" content="Convert images to PDF instantly. Free, private, and 100% client-side image to PDF converter. No upload required.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://mahmadul-rgb.github.io/pixora/image-to-pdf.html">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+      color: #111;
+    }
+
+    header {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      object-fit: contain;
+    }
+
+    main {
+      max-width: 600px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    }
+
+    input[type="file"] {
+      width: 100%;
+      margin: 15px 0;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #4f46e5;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #4338ca;
+    }
+
+    .note {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #555;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <img src="logo.png" alt="Pixora logo" class="logo">
+  <div>
+    <div style="font-weight:600;">Pixora</div>
+    <div style="font-size:12px;color:#555;">Your image never leaves your device</div>
+  </div>
+</header>
+
+<main>
+  <h1>Image to PDF Converter</h1>
+  <p>Convert images to a PDF instantly. Free, private, and secure.</p>
+
+  <input type="file" id="imageInput" accept="image/*" multiple>
+
+  <button onclick="convertToPDF()">Convert to PDF</button>
+
+  <div class="note">
+    100% client-side • No upload • Secure & private  
+    <br><a href="index.html">← Back to Pixora</a>
+  </div>
+</main>
+
+<!-- jsPDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+  async function convertToPDF() {
+    const files = document.getElementById('imageInput').files;
+    if (!files.length) {
+      alert("Please select at least one image");
+      return;
+    }
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+
+    for (let i = 0; i < files.length; i++) {
+      const imgData = await readFile(files[i]);
+
+      const img = new Image();
+      img.src = imgData;
+      await img.decode();
+
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+
+      const ratio = Math.min(pageWidth / img.width, pageHeight / img.height);
+      const width = img.width * ratio;
+      const height = img.height * ratio;
+
+      if (i > 0) pdf.addPage();
+      pdf.addImage(img, 'JPEG', (pageWidth - width) / 2, (pageHeight - height) / 2, width, height);
+    }
+
+    pdf.save("images.pdf");
+  }
+
+  function readFile(file) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = e => resolve(e.target.result);
+      reader.readAsDataURL(file);
+    });
+  }
+</script>
+
+</body>
+</html>
