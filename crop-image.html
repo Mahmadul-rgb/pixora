@@ -43,15 +43,10 @@
       box-shadow: 0 10px 25px rgba(0,0,0,0.05);
     }
 
-    input[type="file"] {
+    input[type="file"], select {
       width: 100%;
       margin: 15px 0;
-    }
-
-    select {
-      width: 100%;
       padding: 8px;
-      margin-bottom: 15px;
     }
 
     button {
@@ -72,6 +67,7 @@
     .preview {
       margin-top: 15px;
       text-align: center;
+      display: none;
     }
 
     canvas {
@@ -107,13 +103,13 @@
 
   <select id="ratio">
     <option value="1">Square (1:1)</option>
-    <option value="4/5">Portrait (4:5)</option>
-    <option value="16/9">Landscape (16:9)</option>
+    <option value="0.8">Portrait (4:5)</option>
+    <option value="1.7777778">Landscape (16:9)</option>
   </select>
 
   <button onclick="cropImage()">Crop & Download</button>
 
-  <div class="preview">
+  <div class="preview" id="previewBox">
     <canvas id="canvas"></canvas>
   </div>
 
@@ -127,9 +123,13 @@
   const imageInput = document.getElementById("imageInput");
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
+  const previewBox = document.getElementById("previewBox");
+  const ratioSelect = document.getElementById("ratio");
 
   let img = new Image();
+  let imageLoaded = false;
 
+  // ✅ Instant preview on file select
   imageInput.addEventListener("change", () => {
     const file = imageInput.files[0];
     if (!file) return;
@@ -141,14 +141,18 @@
     reader.readAsDataURL(file);
   });
 
-  function cropImage() {
-    if (!img.src) {
-      alert("Please select an image");
-      return;
-    }
+  img.onload = () => {
+    imageLoaded = true;
+    drawPreview();
+    previewBox.style.display = "block";
+  };
 
-    const ratioValue = document.getElementById("ratio").value;
-    const ratio = eval(ratioValue);
+  ratioSelect.addEventListener("change", () => {
+    if (imageLoaded) drawPreview();
+  });
+
+  function drawPreview() {
+    const ratio = parseFloat(ratioSelect.value);
 
     let cropWidth = img.width;
     let cropHeight = img.width / ratio;
@@ -175,6 +179,13 @@
       cropWidth,
       cropHeight
     );
+  }
+
+  function cropImage() {
+    if (!imageLoaded) {
+      alert("Please select an image first");
+      return;
+    }
 
     const link = document.createElement("a");
     link.href = canvas.toDataURL("image/jpeg", 0.95);
