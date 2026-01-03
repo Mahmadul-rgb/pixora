@@ -95,6 +95,9 @@ button.loading::after {
   <p>Convert images to a PDF instantly. Free, private, and secure.</p>
 
   <input type="file" id="imageInput" accept="image/*" multiple>
+  <p style="font-size:12px;color:#666; margin-top:6px;">
+  Recommended: up to 20–30 images depending on device RAM
+  </p>
 
   <button id="convertBtn" onclick="convertToPDF()">Convert to PDF</button>
 
@@ -115,8 +118,11 @@ btn.disabled = true;
 btn.innerText = "Converting";
     const files = document.getElementById('imageInput').files;
     if (!files.length) {
-      alert("Please select at least one image");
-      return;
+  alert("Please select at least one image");
+  btn.classList.remove("loading");
+  btn.disabled = false;
+  btn.innerText = "Convert to PDF";
+  return;
     }
 
     const { jsPDF } = window.jspdf;
