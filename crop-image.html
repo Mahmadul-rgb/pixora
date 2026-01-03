@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <title>Crop Image Online – Free & Private | Pixora</title>
-  <meta name="description" content="Crop images online for free. Select square, portrait, or landscape crop. 100% client-side image cropper with no upload.">
+
+  <meta name="description" content="Crop images online for free. Choose square, portrait, or landscape crop. 100% client-side image cropper with no upload.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://mahmadul-rgb.github.io/pixora/crop-image.html">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 
   <style>
@@ -42,7 +44,8 @@
       box-shadow: 0 10px 25px rgba(0,0,0,0.05);
     }
 
-    input[type="file"], select {
+    input[type="file"],
+    select {
       width: 100%;
       margin: 15px 0;
       padding: 8px;
@@ -62,8 +65,6 @@
     button:hover {
       background: #4338ca;
     }
-
-    
 
     .note {
       margin-top: 15px;
@@ -92,14 +93,11 @@
 
   <select id="ratio">
     <option value="1">Square (1:1)</option>
-    <option value="4/5">Portrait (4:5)</option>
-    <option value="16/9">Landscape (16:9)</option>
+    <option value="0.8">Portrait (4:5)</option>
+    <option value="1.7778">Landscape (16:9)</option>
   </select>
 
-  <button onclick="downloadImage()">Crop & Download</button>
-
-  
-  
+  <button onclick="cropAndDownload()">Crop & Download</button>
 
   <div class="note">
     100% client-side • No upload • Secure & private  
@@ -110,8 +108,6 @@
 <script>
   const imageInput = document.getElementById("imageInput");
   const ratioSelect = document.getElementById("ratio");
-  const canvas = document.getElementById("canvas");
-  const ctx = canvas.getContext("2d");
 
   let img = new Image();
 
@@ -122,17 +118,17 @@
     const reader = new FileReader();
     reader.onload = e => {
       img.src = e.target.result;
-      img.onload = drawPreview;
     };
     reader.readAsDataURL(file);
   });
 
-  ratioSelect.addEventListener("change", drawPreview);
+  function cropAndDownload() {
+    if (!img.src) {
+      alert("Please select an image first");
+      return;
+    }
 
-  function drawPreview() {
-    if (!img.src) return;
-
-    const ratio = eval(ratioSelect.value);
+    const ratio = parseFloat(ratioSelect.value);
 
     let cropWidth = img.width;
     let cropHeight = img.width / ratio;
@@ -145,10 +141,12 @@
     const startX = (img.width - cropWidth) / 2;
     const startY = (img.height - cropHeight) / 2;
 
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
     canvas.width = cropWidth;
     canvas.height = cropHeight;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(
       img,
       startX,
@@ -160,13 +158,6 @@
       cropWidth,
       cropHeight
     );
-  }
-
-  function downloadImage() {
-    if (!canvas.width) {
-      alert("Please select an image first");
-      return;
-    }
 
     const link = document.createElement("a");
     link.href = canvas.toDataURL("image/jpeg", 0.95);
