@@ -66,6 +66,59 @@
       color: #555;
       text-align: center;
     }
+    /* Professional button */
+#checkBtn {
+  width: 100%;
+  padding: 12px;
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+#checkBtn:hover {
+  background: #4338ca;
+}
+
+#checkBtn:active {
+  transform: scale(0.98);
+}
+
+/* Result card */
+.result {
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 20px;
+  border: 1px solid #e5e7eb;
+}
+
+/* Result rows */
+.result div {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px dashed #e5e7eb;
+}
+
+.result div:last-child {
+  border-bottom: none;
+}
+
+/* Labels & values */
+.label {
+  color: #555;
+  font-weight: 500;
+}
+
+.result span:not(.label) {
+  font-weight: 600;
+  color: #111;
+}
   </style>
 </head>
 
