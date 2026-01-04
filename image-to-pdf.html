@@ -120,6 +120,13 @@ btn.classList.add("loading");
 btn.disabled = true;
 btn.innerText = "Converting";
     const files = document.getElementById('imageInput').files;
+    if (files.length > 20) {
+  alert("Free version allows up to 20 images per PDF. Please reduce the number of images.");
+  btn.classList.remove("loading");
+  btn.disabled = false;
+  btn.innerText = "Convert to PDF";
+  return;
+    }
     if (!files.length) {
   alert("Please select at least one image");
   btn.classList.remove("loading");
