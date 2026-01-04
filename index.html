@@ -137,6 +137,67 @@
   color: #fff;
   border-color: #4f46e5;
 }
+    .footer {
+  background: #111827;
+  color: #d1d5db;
+  padding: 40px 20px 20px;
+  margin-top: 60px;
+}
+
+.footer-grid {
+  max-width: 1100px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+}
+
+.footer h3 {
+  color: #fff;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.footer h4 {
+  color: #fff;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.footer p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.footer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer ul li {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.footer a {
+  color: #d1d5db;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  text-align: center;
+  font-size: 13px;
+  color: #9ca3af;
+  margin-top: 30px;
+  border-top: 1px solid #374151;
+  padding-top: 15px;
+}
   </style>
 </head>
 
@@ -222,8 +283,55 @@
 
 </main>
 
-<footer>
-  © 2026 Pixora · 100% Client-Side · No Uploads
+<footer class="footer">
+  <div class="footer-grid">
+
+    <!-- Brand -->
+    <div>
+      <h3>Pixora</h3>
+      <p>
+        Fast, private, and 100% client-side image tools.<br>
+        Your images never leave your device.
+      </p>
+    </div>
+
+    <!-- Tools -->
+    <div>
+      <h4>Tools</h4>
+      <ul>
+        <li><a href="compress-image.html">Compress Image</a></li>
+        <li><a href="resize-image.html">Resize Image</a></li>
+        <li><a href="image-size-checker.html">Image Size Checker</a></li>
+        <li><a href="crop-image.html">Crop Image</a></li>
+        <li><a href="image-to-pdf.html">Image to PDF</a></li>
+      </ul>
+    </div>
+
+    <!-- Privacy -->
+    <div>
+      <h4>Privacy</h4>
+      <ul>
+        <li>No Uploads</li>
+        <li>No Tracking</li>
+        <li>No Accounts</li>
+        <li>Offline Processing</li>
+      </ul>
+    </div>
+
+    <!-- More -->
+    <div>
+      <h4>More</h4>
+      <ul>
+        <li><a href="sitemap.xml">Sitemap</a></li>
+        <li><a href="https://github.com/Mahmadul-rgb/pixora" target="_blank">GitHub</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    © 2026 Pixora · Built for privacy · 100% Client-Side
+  </div>
 </footer>
 
 </body>
