@@ -69,6 +69,20 @@
       margin-top: 15px;
       text-align: center;
     }
+    .upload-box {
+  display: block;
+  border: 2px dashed #c7d2fe;
+  padding: 24px;
+  text-align: center;
+  border-radius: 12px;
+  cursor: pointer;
+  background: #eef2ff;
+  transition: 0.2s;
+}
+
+.upload-box:hover {
+  background: #e0e7ff;
+}
   </style>
 </head>
 
@@ -88,7 +102,15 @@
   <h1>Compress Image Online</h1>
   <p>Reduce image size without losing quality. Fast, private, and free.</p>
 
-  <input type="file" id="imageInput" accept="image/*">
+  <label class="upload-box">
+  <input type="file" id="imageInput" accept="image/jpeg, image/png, image/webp" hidden>
+  <div>
+    <strong>Click to upload image</strong>
+    <div style="font-size:13px;color:#666;margin-top:4px;">
+      JPG, PNG, WebP • Max 5 MB
+    </div>
+  </div>
+  </label>
 
   <p style="font-size:12px;color:#666;">
     Free version: Maximum image size <strong>5 MB</strong>.
