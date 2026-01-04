@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Image Size Checker – Check Image Dimensions & Resolution | Pixora</title>
+
+  <meta name="description" content="Check image size, dimensions, resolution, aspect ratio, and file size instantly. 100% client-side image size checker. No upload required.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://mahmadul-rgb.github.io/pixora/image-size-checker.html">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+      color: #111;
+    }
+
+    header {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      object-fit: contain;
+    }
+
+    main {
+      max-width: 600px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    }
+
+    input[type="file"] {
+      width: 100%;
+      margin: 15px 0;
+    }
+
+    .result {
+      margin-top: 15px;
+      font-size: 14px;
+      line-height: 1.8;
+      display: none;
+    }
+
+    .label {
+      font-weight: 600;
+    }
+
+    .note {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #555;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <img src="logo.png" alt="Pixora logo" class="logo">
+  <div>
+    <div style="font-weight:600;">Pixora</div>
+    <div style="font-size:12px;color:#555;">Your image never leaves your device</div>
+  </div>
+</header>
+
+<main>
+  <h1>Image Size Checker</h1>
+  <p>Check image dimensions, resolution, file size, and aspect ratio instantly.</p>
+
+  <input type="file" id="imageInput" accept="image/*">
+
+  <div class="result" id="result">
+    <div><span class="label">File name:</span> <span id="fileName"></span></div>
+    <div><span class="label">File size:</span> <span id="fileSize"></span></div>
+    <div><span class="label">Dimensions:</span> <span id="dimensions"></span></div>
+    <div><span class="label">Aspect ratio:</span> <span id="aspectRatio"></span></div>
+    <div><span class="label">Orientation:</span> <span id="orientation"></span></div>
+    <div><span class="label">Format:</span> <span id="format"></span></div>
+    <div><span class="label">Megapixels:</span> <span id="megapixels"></span></div>
+  </div>
+
+  <div class="note">
+    100% client-side • No upload • Secure & private  
+    <br><a href="index.html">← Back to Pixora</a>
+  </div>
+</main>
+
+</body>
+</html>
