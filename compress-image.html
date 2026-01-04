@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 
-  <title>Compress Image Online – Reduce Image Size Without Losing Quality | Pixora</title>
-  <meta name="description" content="Compress images online for free. Fast, secure, and private image compression.">
+  <title>Compress Image Online – Reduce Image Size | Pixora</title>
+  <meta name="description" content="Compress images online for free. Reduce image size instantly with 100% client-side processing. No upload required.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://mahmadul-rgb.github.io/pixora/compress-image.html">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,7 +22,6 @@
       padding: 16px 20px;
       display: flex;
       align-items: center;
-      gap: 12px;
       background: #fff;
       border-bottom: 1px solid #e5e7eb;
     }
@@ -34,7 +33,8 @@
       object-fit: contain;
     }
 
-    main {
+    /* Main card */
+    .tool-card {
       max-width: 600px;
       margin: 30px auto;
       background: #fff;
@@ -43,12 +43,34 @@
       box-shadow: 0 10px 25px rgba(0,0,0,0.05);
     }
 
+    h1 {
+      margin-top: 0;
+      font-size: 24px;
+    }
+
+    p {
+      color: #555;
+      font-size: 15px;
+    }
+
     input[type="file"] {
       width: 100%;
       margin: 15px 0;
     }
 
-    button {
+    label {
+      font-weight: 600;
+      display: block;
+      margin-top: 10px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+
+    /* Button */
+    .btn-primary {
+      margin-top: 20px;
       width: 100%;
       padding: 12px;
       background: #4f46e5;
@@ -56,33 +78,60 @@
       border: none;
       border-radius: 8px;
       font-size: 16px;
+      font-weight: 600;
       cursor: pointer;
     }
 
-    button:hover {
+    .btn-primary:hover {
       background: #4338ca;
     }
 
+    .btn-primary.loading {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    /* Limit text */
+    .limit-text {
+      font-size: 12px;
+      color: #666;
+      margin-top: 6px;
+    }
+
+    /* Result card */
+    .result-card {
+      margin-top: 16px;
+      padding: 14px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .result-title {
+      color: #16a34a;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .result-line {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
     .note {
+      margin-top: 15px;
       font-size: 13px;
       color: #555;
-      margin-top: 15px;
       text-align: center;
     }
-    .upload-box {
-  display: block;
-  border: 2px dashed #c7d2fe;
-  padding: 24px;
-  text-align: center;
-  border-radius: 12px;
-  cursor: pointer;
-  background: #eef2ff;
-  transition: 0.2s;
-}
 
-.upload-box:hover {
-  background: #e0e7ff;
-}
+    a {
+      color: #4f46e5;
+      text-decoration: none;
+    }
   </style>
 </head>
 
@@ -90,7 +139,7 @@
 
 <header>
   <a href="index.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;">
-    <img src="logo.png" class="logo" alt="Pixora logo">
+    <img src="logo.png" alt="Pixora logo" class="logo">
     <div>
       <div style="font-weight:600;">Pixora</div>
       <div style="font-size:12px;color:#555;">Your image never leaves your device</div>
@@ -98,30 +147,26 @@
   </a>
 </header>
 
-<main>
+<main class="tool-card">
   <h1>Compress Image Online</h1>
-  <p>Reduce image size without losing quality. Fast, private, and free.</p>
+  <p>Reduce image size without losing quality. Fast, private, and 100% client-side.</p>
 
-  <label class="upload-box">
-  <input type="file" id="imageInput" accept="image/jpeg, image/png, image/webp" hidden>
-  <div>
-    <strong>Click to upload image</strong>
-    <div style="font-size:13px;color:#666;margin-top:4px;">
-      JPG, PNG, WebP • Max 5 MB
-    </div>
-  </div>
-  </label>
+  <input type="file" id="imageInput" accept="image/*">
 
-  <p style="font-size:12px;color:#666;">
+  <p class="limit-text">
     Free version: Maximum image size <strong>5 MB</strong>.
   </p>
 
-  <label>Compression Quality: <span id="qualityValue">0.8</span></label>
+  <label>
+    Compression Quality: <span id="qualityValue">0.8</span>
+  </label>
   <input type="range" id="quality" min="0.1" max="1" step="0.1" value="0.8">
 
-  <button onclick="compressImage()">Compress & Download</button>
+  <button id="compressBtn" class="btn-primary" onclick="compressImage()">
+    Compress & Download
+  </button>
 
-  <div id="result" style="margin-top:15px;font-size:14px;"></div>
+  <div id="result" class="result-card"></div>
 
   <div class="note">
     100% client-side • No upload • Secure & private  
@@ -130,11 +175,12 @@
 </main>
 
 <script>
-  const qualitySlider = document.getElementById('quality');
-  const qualityValue = document.getElementById('qualityValue');
-  const resultDiv = document.getElementById('result');
+  const qualitySlider = document.getElementById("quality");
+  const qualityValue = document.getElementById("qualityValue");
+  const resultBox = document.getElementById("result");
+  const btn = document.getElementById("compressBtn");
 
-  qualitySlider.addEventListener('input', () => {
+  qualitySlider.addEventListener("input", () => {
     qualityValue.textContent = qualitySlider.value;
   });
 
@@ -145,48 +191,60 @@
   }
 
   function compressImage() {
-    const fileInput = document.getElementById('imageInput');
+    const fileInput = document.getElementById("imageInput");
 
     if (!fileInput.files.length) {
-      alert("Please select an image");
+      alert("Please select an image first.");
       return;
     }
 
     const file = fileInput.files[0];
 
-    // 🔒 Free version limit
     if (file.size > 5 * 1024 * 1024) {
       alert("Free version supports images up to 5 MB only.");
       return;
     }
 
-    const img = new Image();
+    btn.classList.add("loading");
+    btn.disabled = true;
+    btn.innerText = "Compressing...";
+
     const reader = new FileReader();
+    const img = new Image();
 
     reader.onload = e => img.src = e.target.result;
+    reader.readAsDataURL(file);
 
     img.onload = () => {
-      const canvas = document.createElement('canvas');
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
       canvas.width = img.width;
       canvas.height = img.height;
 
-      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(img, 0, 0);
 
       canvas.toBlob(blob => {
-        resultDiv.innerHTML = `
-          <strong>Original:</strong> ${formatSize(file.size)}<br>
-          <strong>Compressed:</strong> ${formatSize(blob.size)}
+        resultBox.style.display = "block";
+        resultBox.innerHTML = `
+          <div class="result-title">✓ Compression complete</div>
+          <div class="result-line"><span>Original</span><strong>${formatSize(file.size)}</strong></div>
+          <div class="result-line"><span>Compressed</span><strong>${formatSize(blob.size)}</strong></div>
         `;
 
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = 'compressed-' + file.name;
+        link.download = "compressed-" + file.name;
         link.click();
-      }, 'image/jpeg', qualitySlider.value);
-    };
 
-    reader.readAsDataURL(file);
+        btn.classList.remove("loading");
+        btn.disabled = false;
+        btn.innerText = "Compress & Download";
+
+      }, "image/jpeg", parseFloat(qualitySlider.value));
+    };
   }
 </script>
 
