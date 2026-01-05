@@ -169,52 +169,50 @@
   const convertBtn = document.getElementById("convertBtn");
 
   convertBtn.addEventListener("click", async () => {
-    convertBtn.classList.add("loading");
-    convertBtn.disabled = true;
-    convertBtn.innerText = "Converting…";
+  convertBtn.classList.add("loading");
+  convertBtn.disabled = true;
+  convertBtn.innerText = "Converting…";
 
-    const file = pdfInput.files[0];
-    const zip = new JSZip();
-    if (!file) return;
+  const file = pdfInput.files[0];
+  if (!file) return;
 
-    const arrayBuffer = await file.arrayBuffer();
-    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+  const zip = new JSZip();
+  const arrayBuffer = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
 
-    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-      const page = await pdf.getPage(pageNum);
+  for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+    const page = await pdf.getPage(pageNum);
+    const viewport = page.getViewport({ scale: 2 });
 
-      const viewport = page.getViewport({ scale: 2 }); // good quality
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
 
-      canvas.width = viewport.width;
-      canvas.height = viewport.height;
+    await page.render({ canvasContext: ctx, viewport }).promise;
 
-      await page.render({
-        canvasContext: ctx,
-        viewport: viewport
-      }).promise;
-      const imgData = canvas
-  .toDataURL("image/png")
-  .split(",")[1];
+    const imgData = canvas
+      .toDataURL("image/png")
+      .split(",")[1];
 
-zip.file(`pixora-page-${pageNum}.png`, imgData, { base64: true });
-    });
-    }
-    // ✅ Generate ZIP once after all pages processed
-const zipBlob = await zip.generateAsync({ type: "blob" });
+    zip.file(`pixora-page-${pageNum}.png`, imgData, { base64: true });
+  }
 
-const link = document.createElement("a");
-link.href = URL.createObjectURL(zipBlob);
-link.download = "pixora-images.zip";
-document.body.appendChild(link);
-link.click();
-document.body.removeChild(link);
+  // ✅ ZIP GENERATED ONCE
+  const zipBlob = await zip.generateAsync({ type: "blob" });
 
-// ✅ Reset button
-convertBtn.classList.remove("loading");
-convertBtn.innerText = "Convert PDF to Images";
-convertBtn.disabled = false;
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(zipBlob);
+  link.download = "pixora-images.zip";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  // ✅ RESET BUTTON
+  convertBtn.classList.remove("loading");
+  convertBtn.innerText = "Convert PDF to Images";
+  convertBtn.disabled = false;
+});
     
   </script>
 
