@@ -169,6 +169,7 @@
   const convertBtn = document.getElementById("convertBtn");
 
   convertBtn.addEventListener("click", async () => {
+    if (convertBtn.classList.contains("loading")) return;
   convertBtn.classList.add("loading");
   convertBtn.disabled = true;
   convertBtn.innerText = "Converting…";
@@ -207,6 +208,7 @@
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
 
   // ✅ RESET BUTTON
   convertBtn.classList.remove("loading");
