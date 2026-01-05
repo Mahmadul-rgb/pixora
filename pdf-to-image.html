@@ -199,7 +199,10 @@
   .split(",")[1];
 
 zip.file(`pixora-page-${pageNum}.png`, imgData, { base64: true });
-      const zipBlob = await zip.generateAsync({ type: "blob" });
+      
+  });
+    // ✅ Generate ZIP once after all pages processed
+const zipBlob = await zip.generateAsync({ type: "blob" });
 
 const link = document.createElement("a");
 link.href = URL.createObjectURL(zipBlob);
@@ -207,11 +210,11 @@ link.download = "pixora-images.zip";
 document.body.appendChild(link);
 link.click();
 document.body.removeChild(link);
-      
-      convertBtn.classList.remove("loading");
-    convertBtn.innerText = "Convert PDF to Images";
-    convertBtn.disabled = false;
-  });
+
+// ✅ Reset button
+convertBtn.classList.remove("loading");
+convertBtn.innerText = "Convert PDF to Images";
+convertBtn.disabled = false;
   </script>
 
 </body>
