@@ -175,7 +175,12 @@
   convertBtn.innerText = "Converting…";
 
   const file = pdfInput.files[0];
-  if (!file) return;
+if (!file) {
+  convertBtn.classList.remove("loading");
+  convertBtn.innerText = "Convert PDF to Images";
+  convertBtn.disabled = false;
+  return;
+}
 
   const zip = new JSZip();
   const arrayBuffer = await file.arrayBuffer();
@@ -207,8 +212,11 @@
   link.download = "pixora-images.zip";
   document.body.appendChild(link);
   link.click();
-  document.body.removeChild(link);
-    URL.revokeObjectURL(link.href);
+document.body.removeChild(link);
+
+setTimeout(() => {
+  URL.revokeObjectURL(link.href);
+}, 1000);
 
   // ✅ RESET BUTTON
   convertBtn.classList.remove("loading");
