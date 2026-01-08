@@ -253,6 +253,53 @@
 .dot-menu:active {
   background: #f0f1f5;
 }
+    .dot-menu-wrapper {
+  position: relative;
+}
+
+.dot-menu {
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: repeat(3, 4px);
+  gap: 4px;
+}
+
+.dot-menu span {
+  width: 4px;
+  height: 4px;
+  background: #111;
+  border-radius: 50%;
+}
+
+.dot-dropdown {
+  position: absolute;
+  top: 44px;
+  right: 0;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+  min-width: 160px;
+  padding: 8px 0;
+  display: none;
+  z-index: 100;
+}
+
+.dot-dropdown a {
+  display: block;
+  padding: 10px 14px;
+  text-decoration: none;
+  color: #111;
+  font-size: 14px;
+}
+
+.dot-dropdown a:hover {
+  background: #f3f4f6;
+}
+
+/* SHOW ON HOVER */
+.dot-menu-wrapper:hover .dot-dropdown {
+  display: block;
+}
   </style>
 </head>
 
@@ -271,10 +318,21 @@
     <div class="header-spacer"></div>
 
     <!-- 9 DOT MENU -->
-    <div class="dot-menu" title="Menu">
-      <span></span><span></span><span></span>
-      <span></span><span></span><span></span>
-      <span></span><span></span><span></span>
+    <div class="dot-menu-wrapper">
+
+  <!-- 9 DOT ICON -->
+  <div class="dot-menu" title="Menu">
+    <span></span><span></span><span></span>
+    <span></span><span></span><span></span>
+    <span></span><span></span><span></span>
+  </div>
+
+  <!-- DROPDOWN MENU -->
+  <div class="dot-dropdown">
+    <a href="about.html">About Pixora</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
     </div>
 
   </div>
