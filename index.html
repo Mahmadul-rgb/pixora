@@ -515,6 +515,27 @@
     © 2026 Pixora · Built for privacy · 100% Client-Side
   </div>
 </footer>
+  <script>
+  const dotWrapper = document.querySelector(".dot-menu-wrapper");
+  const dotMenu = document.querySelector(".dot-menu");
+  const dotDropdown = document.querySelector(".dot-dropdown");
+
+  // Toggle on dot click
+  dotMenu.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dotWrapper.classList.toggle("active");
+  });
+
+  // Prevent closing when clicking inside dropdown
+  dotDropdown.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
+
+  // Close when clicking outside
+  document.addEventListener("click", () => {
+    dotWrapper.classList.remove("active");
+  });
+</script>
 
 </body>
 </html>
